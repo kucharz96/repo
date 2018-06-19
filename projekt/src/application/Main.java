@@ -48,7 +48,7 @@ public class Main extends Application {
  	 
 
  	 private TableView<Pacjent> table = new TableView<Pacjent>();
- TableView<Lekarz> table1 = new TableView<Lekarz>();
+ 	 private TableView<Lekarz> table1 = new TableView<Lekarz>();
  	 private ObservableList<Lekarz>  dane_lekarzy = FXCollections.observableArrayList();
      private ObservableList<Pacjent>  dane_pacjentow = FXCollections.observableArrayList();
 
@@ -745,7 +745,6 @@ public class Main extends Application {
            public void handle(ActionEvent e) throws  DuplicateKeyException  {
            	
            
-           		System.out.println("XD");
            		dane_lekarzy.add(new Lekarz(
                        addImie.getText(),
                        addNazwisko.getText(),

@@ -271,7 +271,8 @@ public class Main extends Application {
         kolumna_id_lekarza.setCellFactory(TextFieldTableCell.forTableColumn());
         kolumna_id_lekarza.setOnEditCommit(
             new EventHandler<CellEditEvent<Pacjent, String>>() {
-                @Override
+                
+            	@Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
                 	BasicDBObject newDocument = new BasicDBObject();
                 	newDocument.append("$set", new BasicDBObject().append("id_lekarza", t.getNewValue()));
@@ -342,6 +343,7 @@ public class Main extends Application {
         addId_lekarza.setPromptText("ID lekarza");
         
         final Button addButton = new Button("Add");
+        final Button delButton = new Button("Delete");
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -374,7 +376,7 @@ public class Main extends Application {
         });
         
         //Pobieramy dzieci, czyli elementy
-        hb.getChildren().addAll(addId_pacjenta, addImie, addNazwisko, addPesel, addMiasto, addUlica, addTelefon, addId_lekarza, addButton);
+        hb.getChildren().addAll(addId_pacjenta, addImie, addNazwisko, addPesel, addMiasto, addUlica, addTelefon, addId_lekarza, addButton,delButton);
         hb.setSpacing(5);
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));

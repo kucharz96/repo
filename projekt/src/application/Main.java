@@ -15,7 +15,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextField;
-
+import java.lang.String;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
@@ -23,6 +23,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.Group;
 import javafx.scene.layout.VBox;
+import javafx.beans.value.ChangeListener;
+
 /////////////Dla MongoDB////////////
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
@@ -45,7 +47,10 @@ public class Main extends Application {
  	 
 
  	 private TableView<Pacjent> table = new TableView<Pacjent>();
-     private ObservableList<Pacjent>  dane_pacjentow = FXCollections.observableArrayList();
+ 	
+ 	
+ 	 
+ 	 private ObservableList<Pacjent>  dane_pacjentow = FXCollections.observableArrayList();
      final HBox hb = new HBox(); //Odpowiada wyswietlenie dodawania
  	 private int a = 0;
  	 //////////////////
@@ -61,15 +66,15 @@ public class Main extends Application {
  
         final Label label = new Label("Lista pacjentów");
         label.setFont(new Font("Arial", 20));
- 
-        table.setEditable(true);
+        
+       
+      
  ////////////////////////Kolumny i mo¿liwe zmiany///////////////
         TableColumn kolumna_imie = new TableColumn("Imie");
         kolumna_imie.setMinWidth(100);
         kolumna_imie.setCellValueFactory(
                 new PropertyValueFactory<Pacjent, String>("imie"));
         //Edycja pola Imie
-        kolumna_imie.setCellFactory(TextFieldTableCell.forTableColumn());
         kolumna_imie.setOnEditCommit(
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
@@ -375,6 +380,19 @@ public class Main extends Application {
             }
         });
         
+        delButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	
+            	
+            	kolekcja_pacjenci.remove(new BasicDBObject().append("_id",table.getSelectionModel().getSelectedItem().getId_pacjenta()));
+            	table.getSelectionModel().getSelectedItems().clear();
+
+            }
+        });
+        
+        
+        
         //Pobieramy dzieci, czyli elementy
         hb.getChildren().addAll(addId_pacjenta, addImie, addNazwisko, addPesel, addMiasto, addUlica, addTelefon, addId_lekarza, addButton,delButton);
         hb.setSpacing(5);
@@ -464,7 +482,11 @@ public class Main extends Application {
             this.id_pacjenta = new SimpleStringProperty(id_pacjenta);
             this.id_lekarza = new SimpleStringProperty(id_lekarza);
         }
-        //GETTERY I SETTERY
+        public void clear() {
+			// TODO Auto-generated method stub
+			
+		}
+		//GETTERY I SETTERY
         public String getImie() {
             return imie.get();
         }

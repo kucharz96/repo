@@ -68,7 +68,7 @@ public class Main extends Application {
         final Label label = new Label("Lista pacjentów");
         label.setFont(new Font("Arial", 20));
         
-       
+        table.setEditable(true);
       
  ////////////////////////Kolumny i mo¿liwe zmiany///////////////
         TableColumn kolumna_imie = new TableColumn("Imie");

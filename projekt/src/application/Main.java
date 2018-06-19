@@ -74,7 +74,7 @@ public class Main extends Application {
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
-                    ((Pacjent) t.getTableView().getItems().get(
+                  ((Pacjent) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setImie(t.getNewValue());
                 }

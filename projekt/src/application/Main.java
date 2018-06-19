@@ -15,7 +15,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextField;
-
+import java.lang.String;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
@@ -23,6 +23,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.Group;
 import javafx.scene.layout.VBox;
+import javafx.beans.value.ChangeListener;
+
 /////////////Dla MongoDB////////////
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
@@ -46,9 +48,10 @@ public class Main extends Application {
  	 
 
  	 private TableView<Pacjent> table = new TableView<Pacjent>();
- 	 private TableView<Lekarz> table1 = new TableView<Lekarz>();
+ TableView<Lekarz> table1 = new TableView<Lekarz>();
  	 private ObservableList<Lekarz>  dane_lekarzy = FXCollections.observableArrayList();
      private ObservableList<Pacjent>  dane_pacjentow = FXCollections.observableArrayList();
+
      final HBox hb = new HBox(); //Odpowiada wyswietlenie dodawania
  	 private int a = 0;
  	 //////////////////
@@ -64,15 +67,15 @@ public class Main extends Application {
  
         final Label label = new Label("Lista pacjentów");
         label.setFont(new Font("Arial", 20));
- 
-        table.setEditable(true);
+        
+       
+      
  ////////////////////////Kolumny i mo¿liwe zmiany///////////////
         TableColumn kolumna_imie = new TableColumn("Imie");
         kolumna_imie.setMinWidth(100);
         kolumna_imie.setCellValueFactory(
                 new PropertyValueFactory<Pacjent, String>("imie"));
         //Edycja pola Imie
-        kolumna_imie.setCellFactory(TextFieldTableCell.forTableColumn());
         kolumna_imie.setOnEditCommit(
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
@@ -274,7 +277,8 @@ public class Main extends Application {
         kolumna_id_lekarza.setCellFactory(TextFieldTableCell.forTableColumn());
         kolumna_id_lekarza.setOnEditCommit(
             new EventHandler<CellEditEvent<Pacjent, String>>() {
-                @Override
+                
+            	@Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
                 	BasicDBObject newDocument = new BasicDBObject();
                 	newDocument.append("$set", new BasicDBObject().append("id_lekarza", t.getNewValue()));
@@ -345,6 +349,7 @@ public class Main extends Application {
         addId_lekarza.setPromptText("ID lekarza");
         
         final Button addButton = new Button("Add");
+        final Button delButton = new Button("Delete");
         addButton.setOnAction(new EventHandler<ActionEvent>() {
         	 BasicDBObject dodaj;
             @Override  
@@ -376,8 +381,21 @@ public class Main extends Application {
             }
         });
         
+        delButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	
+            	
+            	kolekcja_pacjenci.remove(new BasicDBObject().append("_id",table.getSelectionModel().getSelectedItem().getId_pacjenta()));
+            	table.getSelectionModel().getSelectedItems().clear();
+
+            }
+        });
+        
+        
+        
         //Pobieramy dzieci, czyli elementy
-        hb.getChildren().addAll(addId_pacjenta, addImie, addNazwisko, addPesel, addMiasto, addUlica, addTelefon, addId_lekarza, addButton);
+        hb.getChildren().addAll(addId_pacjenta, addImie, addNazwisko, addPesel, addMiasto, addUlica, addTelefon, addId_lekarza, addButton,delButton);
         hb.setSpacing(5);
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
@@ -953,7 +971,11 @@ public class Main extends Application {
             this.id_pacjenta = new SimpleStringProperty(id_pacjenta);
             this.id_lekarza = new SimpleStringProperty(id_lekarza);
         }
-        //GETTERY I SETTERY
+        public void clear() {
+			// TODO Auto-generated method stub
+			
+		}
+		//GETTERY I SETTERY
         public String getImie() {
             return imie.get();
         }

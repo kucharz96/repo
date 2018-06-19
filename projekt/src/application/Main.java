@@ -202,11 +202,11 @@ public class Main extends Application {
         try{
 		 	while(cursor.hasNext())
 		 	{
-		 		DBObject instance = cursor.next();
+		 		DBObject obecny_dokument = cursor.next();
 		 		
-		 		dane_pacjentow.add(new Pacjent((String)instance.get("imie"), (String)instance.get("nazwisko"), (String)instance.get("pesel"),
-		 				(String)instance.get("miasto"), (String)instance.get("ulica"), (String)instance.get("telefon"),(String)instance.get("_id"),
-		 				(String)instance.get("_id_lekarza")));
+		 		dane_pacjentow.add(new Pacjent((String)obecny_dokument.get("imie"), (String)obecny_dokument.get("nazwisko"), (String)obecny_dokument.get("pesel"),
+		 				(String)obecny_dokument.get("miasto"), (String)obecny_dokument.get("ulica"), (String)obecny_dokument.get("telefon"),(String)obecny_dokument.get("_id"),
+		 				(String)obecny_dokument.get("_id_lekarza")));
 		 		
 
 		 	}
@@ -260,6 +260,12 @@ public class Main extends Application {
                         addId_pacjenta.getText(),
                         addId_lekarza.getText()
                         ));
+                BasicDBObject dodaj = new BasicDBObject("imie", addImie.getText()).append("nazwisko", addNazwisko.getText())
+                		.append("pesel",  addPesel.getText()).append("miasto", addMiasto.getText()).append("ulica", addUlica.getText())
+                		.append("telefon", addTelefon.getText()).append("_id", addId_pacjenta.getText())
+                		.append("_id_lekarza", addId_lekarza.getText());
+                kolekcja_pacjenci.insert(dodaj);
+                
                 addImie.clear();
                 addNazwisko.clear();
                 addPesel.clear();
@@ -268,8 +274,10 @@ public class Main extends Application {
                 addTelefon.clear();
                 addId_pacjenta.clear();
                 addId_lekarza.clear();
+                
             }
         });
+        
         //Pobieramy dzieci, czyli elementy
         hb.getChildren().addAll(addId_pacjenta, addImie, addNazwisko, addPesel, addMiasto, addUlica, addTelefon, addId_lekarza, addButton);
         hb.setSpacing(5);

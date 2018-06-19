@@ -74,7 +74,17 @@ public class Main extends Application {
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
-                  ((Pacjent) t.getTableView().getItems().get(
+                	
+                	BasicDBObject newDocument = new BasicDBObject();
+                	newDocument.append("$set", new BasicDBObject().append("imie", t.getNewValue()));
+
+                	BasicDBObject searchQuery = new BasicDBObject().append("_id",((Pacjent) t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                            ).getId_pacjenta());
+
+                	kolekcja_pacjenci.update(searchQuery, newDocument);
+                	
+                	((Pacjent) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setImie(t.getNewValue());
                 }
@@ -89,7 +99,20 @@ public class Main extends Application {
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
-                    ((Pacjent) t.getTableView().getItems().get(
+                    
+                	BasicDBObject newDocument = new BasicDBObject();
+                	newDocument.append("$set", new BasicDBObject().append("nazwisko", t.getNewValue()));
+
+                	BasicDBObject searchQuery = new BasicDBObject().append("_id",((Pacjent) t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                            ).getId_pacjenta());
+
+                	kolekcja_pacjenci.update(searchQuery, newDocument);
+                	
+                	
+                	
+                	
+                	((Pacjent) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setNazwisko(t.getNewValue());
                 }
@@ -105,7 +128,19 @@ public class Main extends Application {
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
-                    ((Pacjent) t.getTableView().getItems().get(
+                	BasicDBObject newDocument = new BasicDBObject();
+                	newDocument.append("$set", new BasicDBObject().append("miasto", t.getNewValue()));
+
+                	BasicDBObject searchQuery = new BasicDBObject().append("_id",((Pacjent) t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                            ).getId_pacjenta());
+
+                	kolekcja_pacjenci.update(searchQuery, newDocument);
+                	
+                	
+                	
+                	
+                	((Pacjent) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setMiasto(t.getNewValue());
                 }
@@ -122,7 +157,20 @@ public class Main extends Application {
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
-                    ((Pacjent) t.getTableView().getItems().get(
+                    
+                	BasicDBObject newDocument = new BasicDBObject();
+                	newDocument.append("$set", new BasicDBObject().append("pesel", t.getNewValue()));
+
+                	BasicDBObject searchQuery = new BasicDBObject().append("_id",((Pacjent) t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                            ).getId_pacjenta());
+
+                	kolekcja_pacjenci.update(searchQuery, newDocument);
+                	
+                	
+                	
+                	
+                	((Pacjent) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setMiasto(t.getNewValue());
                 }
@@ -139,7 +187,19 @@ public class Main extends Application {
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
-                    ((Pacjent) t.getTableView().getItems().get(
+                    
+                	BasicDBObject newDocument = new BasicDBObject();
+                	newDocument.append("$set", new BasicDBObject().append("ulica", t.getNewValue()));
+
+                	BasicDBObject searchQuery = new BasicDBObject().append("_id",((Pacjent) t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                            ).getId_pacjenta());
+
+                	kolekcja_pacjenci.update(searchQuery, newDocument);
+                	
+                	
+                	
+                	((Pacjent) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setMiasto(t.getNewValue());
                 }
@@ -156,7 +216,18 @@ public class Main extends Application {
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
-                    ((Pacjent) t.getTableView().getItems().get(
+                    
+                	BasicDBObject newDocument = new BasicDBObject();
+                	newDocument.append("$set", new BasicDBObject().append("telefon", t.getNewValue()));
+
+                	BasicDBObject searchQuery = new BasicDBObject().append("_id",((Pacjent) t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                            ).getId_pacjenta());
+
+                	kolekcja_pacjenci.update(searchQuery, newDocument);
+                	
+                	
+                	((Pacjent) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setMiasto(t.getNewValue());
                 }
@@ -173,7 +244,19 @@ public class Main extends Application {
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
-                    ((Pacjent) t.getTableView().getItems().get(
+                    
+                	
+                	BasicDBObject newDocument = new BasicDBObject();
+                	newDocument.append("$set", new BasicDBObject().append("id_pacjenta", t.getNewValue()));
+
+                	BasicDBObject searchQuery = new BasicDBObject().append("_id",((Pacjent) t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                            ).getId_pacjenta());
+
+                	kolekcja_pacjenci.update(searchQuery, newDocument);
+                	
+                	
+                	((Pacjent) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setMiasto(t.getNewValue());
                 }
@@ -190,7 +273,19 @@ public class Main extends Application {
             new EventHandler<CellEditEvent<Pacjent, String>>() {
                 @Override
                 public void handle(CellEditEvent<Pacjent, String> t) {
-                    ((Pacjent) t.getTableView().getItems().get(
+                	BasicDBObject newDocument = new BasicDBObject();
+                	newDocument.append("$set", new BasicDBObject().append("id_lekarza", t.getNewValue()));
+
+                	BasicDBObject searchQuery = new BasicDBObject().append("_id",((Pacjent) t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                            ).getId_pacjenta());
+
+                	kolekcja_pacjenci.update(searchQuery, newDocument);
+                	
+                	
+                	
+                	
+                	((Pacjent) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setMiasto(t.getNewValue());
                 }

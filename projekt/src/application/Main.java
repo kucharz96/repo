@@ -248,9 +248,13 @@ public class Main extends Application {
         
         final Button addButton = new Button("Add");
         addButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                dane_pacjentow.add(new Pacjent(
+        	 BasicDBObject dodaj;
+            @Override  
+            public void handle(ActionEvent e) throws  DuplicateKeyException  {
+            	
+            
+            		System.out.println("XD");
+            		dane_pacjentow.add(new Pacjent(
                         addImie.getText(),
                         addNazwisko.getText(),
                         addPesel.getText(),
@@ -260,12 +264,11 @@ public class Main extends Application {
                         addId_pacjenta.getText(),
                         addId_lekarza.getText()
                         ));
-                BasicDBObject dodaj = new BasicDBObject("imie", addImie.getText()).append("nazwisko", addNazwisko.getText())
+                dodaj = new BasicDBObject("imie", addImie.getText()).append("nazwisko", addNazwisko.getText())
                 		.append("pesel",  addPesel.getText()).append("miasto", addMiasto.getText()).append("ulica", addUlica.getText())
                 		.append("telefon", addTelefon.getText()).append("_id", addId_pacjenta.getText())
                 		.append("_id_lekarza", addId_lekarza.getText());
-                kolekcja_pacjenci.insert(dodaj);
-                
+               kolekcja_pacjenci.insert(dodaj);
                 addImie.clear();
                 addNazwisko.clear();
                 addPesel.clear();

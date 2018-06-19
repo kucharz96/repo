@@ -43,6 +43,7 @@ public class Main extends Application {
          list.clear();
 
             }
+            
         });
         
         
@@ -63,7 +64,7 @@ public class Main extends Application {
         list.addAll(btn,btn2,btn3,label1);
         Scene scene = new Scene(root, 600, 400);
 
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("Aplikacja");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

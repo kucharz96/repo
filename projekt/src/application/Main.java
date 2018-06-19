@@ -386,7 +386,6 @@ public class Main extends Application {
             	
             	
             	kolekcja_pacjenci.remove(new BasicDBObject().append("_id",table.getSelectionModel().getSelectedItem().getId_pacjenta()));
-            	table.getSelectionModel().getSelectedItems().clear();
 
             }
         });
@@ -482,10 +481,7 @@ public class Main extends Application {
             this.id_pacjenta = new SimpleStringProperty(id_pacjenta);
             this.id_lekarza = new SimpleStringProperty(id_lekarza);
         }
-        public void clear() {
-			// TODO Auto-generated method stub
-			
-		}
+      
 		//GETTERY I SETTERY
         public String getImie() {
             return imie.get();

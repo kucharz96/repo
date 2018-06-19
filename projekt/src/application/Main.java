@@ -1,5 +1,5 @@
 package application;
-import javafx.collections.ObservableList; 
+import javafx.collections.ObservableList;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -11,6 +11,16 @@ import javafx.stage.Stage;
 import javafx.geometry.Insets; 
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+//////////Dla MongoDB////////////
+import com.mongodb.*;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+import org.bson.Document;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 public class Main extends Application {
     
     @Override
@@ -18,7 +28,7 @@ public class Main extends Application {
         Button btn = new Button();
         Button btn2 = new Button();
         Button btn3 = new Button();
-        Label label1 = new Label("Przechodnia");
+        Label label1 = new Label("Przychodnia");
         Pane root = new Pane();
         label1.setFont(new Font("Arial", 38));
         ObservableList list = root.getChildren();

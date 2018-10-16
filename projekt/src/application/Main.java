@@ -36,14 +36,15 @@ import java.util.List;
 
 
 public class Main extends Application {
-	 //private TableView table = new TableView();
 	 private Stage stages = new Stage();
+	 
  	 MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
  	 DB database = mongoClient.getDB("Kamil");
- 	 	//Pobiera kolekcjê, tworzy zapytanie wraz z kursorem (petla)
  	 DBCollection kolekcja_pacjenci = database.getCollection("Pacjenci");
  	 DBCollection kolekcja_lekarze = database.getCollection("Lekarze");
  	 BasicDBObject searchQuery = new BasicDBObject();
+ 	 
+ 	 
  	 DBCursor cursor = kolekcja_pacjenci.find();
  	 
 
@@ -54,6 +55,7 @@ public class Main extends Application {
 
      final HBox hb = new HBox(); //Odpowiada wyswietlenie dodawania
  	 private int a = 0;
+ 	 private int b = 0;
  	 //////////////////
  	 ////////////////////Funkcja pierwsza////////////////////////
 	public void pacjenci(Stage stage) {
@@ -87,14 +89,13 @@ public class Main extends Application {
                 	BasicDBObject searchQuery = new BasicDBObject().append("_id",((Pacjent) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                             ).getId_pacjenta());
-
-                	kolekcja_pacjenci.update(searchQuery, newDocument);
-                	
+                	kolekcja_pacjenci.update(searchQuery, newDocument);               	
                 	((Pacjent) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setImie(t.getNewValue());
                 }
             });
+        
         TableColumn kolumna_nazwisko = new TableColumn("Nazwisko");
         kolumna_nazwisko.setMinWidth(100);
         kolumna_nazwisko.setCellValueFactory(
@@ -306,11 +307,11 @@ public class Main extends Application {
 		 	{
 		 		DBObject obecny_dokument = cursor.next();
 		 		
-		 		dane_pacjentow.add(new Pacjent((String)obecny_dokument.get("imie"), (String)obecny_dokument.get("nazwisko"), (String)obecny_dokument.get("pesel"),
-		 				(String)obecny_dokument.get("miasto"), (String)obecny_dokument.get("ulica"), (String)obecny_dokument.get("telefon"),(String)obecny_dokument.get("_id"),
+		 		dane_pacjentow.add(new Pacjent((String)obecny_dokument.get("imie"), (String)obecny_dokument.get("nazwisko"),
+		 				(String)obecny_dokument.get("pesel"),
+		 				(String)obecny_dokument.get("miasto"), (String)obecny_dokument.get("ulica"),
+		 				(String)obecny_dokument.get("telefon"),(String)obecny_dokument.get("_id"),
 		 				(String)obecny_dokument.get("_id_lekarza")));
-		 		
-
 		 	}
         }finally{
 		 		
@@ -320,7 +321,8 @@ public class Main extends Application {
         //System.out.println(dane_pacjentow);
         //table.setItems(dane_pacjentow);
 
-        table.getColumns().addAll(kolumna_id_pacjenta , kolumna_imie, kolumna_nazwisko, kolumna_pesel, kolumna_miasto, kolumna_ulica, kolumna_telefon, kolumna_id_lekarza);
+        table.getColumns().addAll(kolumna_id_pacjenta ,
+        		kolumna_imie, kolumna_nazwisko, kolumna_pesel, kolumna_miasto, kolumna_ulica, kolumna_telefon, kolumna_id_lekarza);
  
         ////////Operacja dodawania////////
         final TextField addImie = new TextField();
@@ -350,10 +352,11 @@ public class Main extends Application {
         
         final Button addButton = new Button("Add");
         final Button delButton = new Button("Delete");
+        BasicDBObject dodaj;
         addButton.setOnAction(new EventHandler<ActionEvent>() {
-        	 BasicDBObject dodaj;
             @Override  
             public void handle(ActionEvent e) throws  DuplicateKeyException  {
+             	try{
             		dane_pacjentow.add(new Pacjent(
                         addImie.getText(),
                         addNazwisko.getText(),
@@ -369,6 +372,14 @@ public class Main extends Application {
                 		.append("telefon", addTelefon.getText()).append("_id", addId_pacjenta.getText())
                 		.append("_id_lekarza", addId_lekarza.getText());
                kolekcja_pacjenci.insert(dodaj);
+            }
+             	catch (DuplicateKeyException f)
+                {
+                	dane_pacjentow.remove(dodaj);
+                	System.err.println("B³¹d  - duplkiacja kluczy!\n");
+                }
+        	
+            
                 addImie.clear();
                 addNazwisko.clear();
                 addPesel.clear();
@@ -377,9 +388,9 @@ public class Main extends Application {
                 addTelefon.clear();
                 addId_pacjenta.clear();
                 addId_lekarza.clear();
-                
-            }
-        });
+            }});      
+            
+        
         
         delButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -408,12 +419,15 @@ public class Main extends Application {
         a=1;
 		 }
 		 else
+		 {
+			 a =1;
 		 stage.show();
+		 }
     }
 	//////////////////////Funkcja lekarze//////////////////
 	public void lekarze(Stage stage) {
 		final VBox vbox = new VBox();
-		 if (a==0){
+		 if (b==0){
        Scene scene = new Scene(new Group());
        
        stage.setTitle("Lekarze");
@@ -426,7 +440,7 @@ public class Main extends Application {
        table1.setEditable(true);
 ////////////////////////Kolumny i mo¿liwe zmiany///////////////
        TableColumn kolumna_imie = new TableColumn("Imie");
-       kolumna_imie.setMinWidth(50);
+       kolumna_imie.setMinWidth(100);
        kolumna_imie.setCellValueFactory(
                new PropertyValueFactory<Lekarz, String>("imie"));
        //Edycja pola Imie
@@ -452,7 +466,7 @@ public class Main extends Application {
            });
        ///Nazwisko lekarza
        TableColumn kolumna_nazwisko = new TableColumn("Nazwisko");
-       kolumna_nazwisko.setMinWidth(50);
+       kolumna_nazwisko.setMinWidth(100);
        kolumna_nazwisko.setCellValueFactory(
                new PropertyValueFactory<Lekarz, String>("nazwisko"));
        //Edycja pole nazwisko
@@ -481,7 +495,7 @@ public class Main extends Application {
            }
        );
        TableColumn kolumna_miasto = new TableColumn("Miasto");
-       kolumna_miasto.setMinWidth(50);
+       kolumna_miasto.setMinWidth(100);
        kolumna_miasto.setCellValueFactory(
                new PropertyValueFactory<Lekarz, String>("miasto"));
        //Edycja pole miasto
@@ -510,7 +524,7 @@ public class Main extends Application {
        );
        //Kolumna pesel
        TableColumn kolumna_pesel = new TableColumn("Pesel");
-       kolumna_pesel.setMinWidth(50);
+       kolumna_pesel.setMinWidth(100);
        kolumna_pesel.setCellValueFactory(
                new PropertyValueFactory<Lekarz, String>("pesel"));
        //Edycja pole pesel
@@ -683,7 +697,7 @@ public class Main extends Application {
                }
            }
        );
-       
+       final Button delButton = new Button("Delete");
        ////Odczyt z bazy do obiektow person
        try{
     	   cursor = kolekcja_lekarze.find();
@@ -691,11 +705,12 @@ public class Main extends Application {
 		 	{
 		 		DBObject obecny_dokument = cursor.next();
 		 		
-		 		dane_lekarzy.add(new Lekarz((String)obecny_dokument.get("imie"), (String)obecny_dokument.get("nazwisko"), (String)obecny_dokument.get("pesel"),
-		 				(String)obecny_dokument.get("miasto"), (String)obecny_dokument.get("ulica"), (String)obecny_dokument.get("numer_domu"),(String)obecny_dokument.get("sala"),
+		 		dane_lekarzy.add(new Lekarz((String)obecny_dokument.get("imie"),
+		 				(String)obecny_dokument.get("nazwisko"), (String)obecny_dokument.get("pesel"),
+		 				(String)obecny_dokument.get("miasto"), (String)obecny_dokument.get("ulica"),
+		 				(String)obecny_dokument.get("numer_domu"),(String)obecny_dokument.get("sala"),
 		 				(String)obecny_dokument.get("specjalizacja"), (String)obecny_dokument.get("_id")));
 		 		
-
 		 	}
        }finally{
 		 		
@@ -742,8 +757,6 @@ public class Main extends Application {
        	 BasicDBObject dodaj;
            @Override  
            public void handle(ActionEvent e) throws  DuplicateKeyException  {
-           	
-           
            		dane_lekarzy.add(new Lekarz(
                        addImie.getText(),
                        addNazwisko.getText(),
@@ -773,8 +786,17 @@ public class Main extends Application {
            }
        });
        
+       delButton.setOnAction(new EventHandler<ActionEvent>() {
+           @Override
+           public void handle(ActionEvent e) {
+           	
+           	
+           	kolekcja_lekarze.remove(new BasicDBObject().append("_id",table1.getSelectionModel().getSelectedItem().getId_lekarza()));
+
+           }
+       });
        //Pobieramy dzieci, czyli elementy
-       hb.getChildren().addAll(addId_lekarza, addImie, addNazwisko, addPesel, addMiasto, addUlica, addNumer_domu, addSala, addSpecjalizacja, addButton);
+       hb.getChildren().addAll(addId_lekarza, addImie, addNazwisko, addPesel, addMiasto, addUlica, addNumer_domu, addSala, addSpecjalizacja, addButton, delButton);
        hb.setSpacing(5);
        vbox.setSpacing(5);
        vbox.setPadding(new Insets(10, 0, 0, 10));
@@ -785,10 +807,13 @@ public class Main extends Application {
 
        stage.setScene(scene);
        stage.show();
-       a=1;
+       b=1;
 		 }
 		 else
+		 {
+			 b = 0;
 		 stage.show();
+		 }
 		
 	}
 	
@@ -809,14 +834,12 @@ public class Main extends Application {
         btn.setText("Pacjenci");
         btn2.setText("Lekarze");
         
-        btn3.setText("Exit");
+        //btn3.setText("Exit");
         btn2.setOnAction(new EventHandler<ActionEvent>() {
  
             @Override
             public void handle(ActionEvent event) {
-            	//mongoClient.getDatabaseNames().forEach(System.out::println);
 
-            	//list.clear();
             	lekarze(stages);
 
             }
@@ -826,9 +849,7 @@ public class Main extends Application {
         	 
             @Override
             public void handle(ActionEvent event) {
-            	//mongoClient.getDatabaseNames().forEach(System.out::println);
 
-            	//list.clear();
             	pacjenci(stages);
 
             }
@@ -851,7 +872,7 @@ public class Main extends Application {
         btn2.setMinHeight(75);
         btn3.setMinWidth(100);
         
-        list.addAll(btn,btn2,btn3,label1);
+        list.addAll(btn,btn2,label1);
 
         primaryStage.show();
     }
